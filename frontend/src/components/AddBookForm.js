@@ -41,11 +41,8 @@ const AddBookForm = () => {
             if (coverImage) data.append("cover", coverImage);
             if (bookFile) data.append("bookFile", bookFile);
 
-            const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/books/upload`, {
+            const response = await authFetch(`${process.env.REACT_APP_SERVER_URL}/books/upload`, {
                 method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                },
                 body: data,
             });
 
