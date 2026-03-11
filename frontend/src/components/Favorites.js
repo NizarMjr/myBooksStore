@@ -42,7 +42,7 @@ const Favorites = () => {
                             <div className="relative mb-6 flex justify-center">
                                 <div className="absolute inset-0 bg-blue-600/5 blur-3xl rounded-full scale-75 group-hover:scale-110 transition-transform duration-500"></div>
                                 <img
-                                    src={`http://localhost:5000${book.cover.startsWith('/') ? '' : '/'}${book.cover}`} alt={book.title}
+                                    src={book.cover}
                                     className="h-64 w-44 object-cover rounded-xl shadow-[10px_15px_30px_rgba(0,0,0,0.2)] group-hover:-translate-y-3 group-hover:rotate-2 transition-all duration-500 z-10"
                                 />
                                 <div className="absolute top-0 right-2 z-20 bg-amber-400 text-white p-2 rounded-lg shadow-lg rotate-12 group-hover:rotate-0 transition-transform">
