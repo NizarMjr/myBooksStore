@@ -8,7 +8,7 @@ const BookComments = ({ bookId }) => {
     useEffect(() => {
         const fetchComments = async () => {
             try {
-                const res = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/favorites/books/${bookId}/comments`);
+                const res = await fetch(`${process.env.REACT_APP_SERVER_URL}/books/${bookId}/comments`);
                 const data = await res.json();
                 setComments(data.comments || []);
             } catch (err) {
