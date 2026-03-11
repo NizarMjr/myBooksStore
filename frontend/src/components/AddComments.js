@@ -14,7 +14,7 @@ const AddComments = ({ bookId }) => {
         }
         
         try {
-            const res = await authFetch(`${process.env.REACT_APP_SERVER_URL}/user/favorites/books/${bookId}/comments`, {
+            const res = await authFetch(`${process.env.REACT_APP_SERVER_URL}/books/${bookId}/comments`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
