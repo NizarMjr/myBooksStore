@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    direction: rtl;
+}
+
+.recommend-swiper .swiper-button-next,
+.recommend-swiper .swiper-button-prev {
+    background: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    color: #0f172a !important;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.recommend-swiper .swiper-button-next:after,
+.recommend-swiper .swiper-button-prev:after {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.recommend-swiper .swiper-button-next:hover,
+.recommend-swiper .swiper-button-prev:hover {
+    background: #2563eb;
+    color: white !important;
+}
+
+.recommend-swiper .swiper-pagination-bullet-active {
+    background: #2563eb !important;
+    width: 25px;
+    border-radius: 5px;
+}
+
+html {
+    scroll-behavior: smooth;
+}
