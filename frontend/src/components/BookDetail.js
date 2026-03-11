@@ -89,11 +89,12 @@ const BookDetail = () => {
 
 
     const handleRead = (fileUrl) => {
-        if (!fileUrl || fileUrl.includes('[object')) {
-            alert("هذا الرابط معطوب، يرجى إعادة رفع الكتاب");
-            return;
-        }
-        window.open(fileUrl, '_blank');
+        alert('ميزة استعراض ملفات PDF غير متوفرة');
+        // if (!fileUrl || fileUrl.includes('[object')) {
+        //     alert("هذا الرابط معطوب، يرجى إعادة رفع الكتاب");
+        //     return;
+        // }
+        // window.open(fileUrl, '_blank');
     };
     const handleDownload = async (fileUrl, bookTitle) => {
         if (!fileUrl) return alert("الرابط غير متوفر");
