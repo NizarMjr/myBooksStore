@@ -31,7 +31,6 @@ const Content = () => {
                 setBooks(prev => currentPage === 1 ? data.books : [...prev, ...data.books]);
                 setHasMore(currentPage < data.totalPages);
                 setTotalBooks(data.totalBooks || 0);
-                console.log(data.books);
 
             } else {
                 if (currentPage === 1) setBooks([]);
