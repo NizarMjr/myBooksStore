@@ -1,6 +1,6 @@
 const express = require('express');
 const { authenticatedToken, authenticatedAdmin, upload } = require('../middelware/middelware');
-const { getBooks, getBookDetail, signup, addComment, login, getBookComment, getCategories, getUsers, getAllBooks, refresh, logout, updateBook, getUser, updateRole, updateFavorite, getFavoritesBooks, resetNotification, uploadBook, deleteBook } = require('../controllers/controllers');
+const { getBooks, getBookDetail, signup, addComment, login, getBookComment, getCategories, getUsers, getAllBooks, refresh, logout, updateBook, getUser, updateRole, updateFavorite, getFavoritesBooks, resetNotification, uploadBook, deleteBook, health } = require('../controllers/controllers');
 const router = express.Router();
 router.post('/books/upload', authenticatedToken, authenticatedAdmin,
     upload.fields([
@@ -27,5 +27,5 @@ router.get('/user/:id', authenticatedToken, getUser) // GET USER
 router.put('/admin/:id', authenticatedToken, authenticatedAdmin, updateRole) // UPDATE ROLE
 router.post('/books/:id/favorite', authenticatedToken, updateFavorite) // UPDATE FAVORITE
 router.post('/notification/reset', authenticatedToken, resetNotification) // RESET NOTIFICATION
-
+router.get('/health',health); // CHECK SERVER HEALTH
 module.exports = router;

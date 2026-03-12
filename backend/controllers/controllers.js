@@ -67,7 +67,7 @@ module.exports.login = async (req, res) => {
         await newRefreshToken.save();
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
-            secure: true,   
+            secure: true,
             sameSite: 'None',
             maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
         });
@@ -536,3 +536,10 @@ module.exports.deleteBook = async (req, res) => {
         return res.status(500).json({ message: "خطأ في السيرفر", error: error.message });
     }
 };
+// CHECK SERVER HEALTH
+module.exports.health = (req, res) => {
+    res.status(200).json({
+        status: 'online',
+        message: 'Server is awake and healthy'
+    });
+}

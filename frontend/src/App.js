@@ -9,8 +9,26 @@ import Signup from './components/Signup';
 import Dashboard from './components/Dashboard';
 import UserDetails from './components/UserDetails';
 import Favorites from './components/Favorites';
+import { useEffect } from 'react';
 
 function App() {
+  const [appLoading, setAppLoading] = useState(true);
+
+  useEffect(() => {
+    const checkServer = async () => {
+      try {
+        const res = await fetch(`${process.env.REACT_APP_SERVER_URL}/health`);
+        if (res.ok)
+          setAppLoading(false);
+      } catch (err) {
+        setAppLoading(false);
+      }
+    };
+
+    checkServer();
+  }, []);
+
+  if (appLoading) return <ProgressBarLoader />;
   return (
     <BrowserRouter>
       <Navbar />
@@ -22,7 +40,7 @@ function App() {
         <Route
           path="/admin/dashboard"
           element={
-              <Dashboard />
+            <Dashboard />
           }
         />
         <Route path='/user/:id' element={<UserDetails />} />
