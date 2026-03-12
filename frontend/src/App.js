@@ -11,6 +11,7 @@ import UserDetails from './components/UserDetails';
 import Favorites from './components/Favorites';
 import { useEffect, useState } from 'react';
 import ProgressBarLoader from './components/ProgressBarLoader';
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   const [appLoading, setAppLoading] = useState(true);
@@ -32,6 +33,7 @@ function App() {
   if (appLoading) return <ProgressBarLoader />;
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Navbar />
       <Routes>
         <Route path="/login" element={<Login />} />
