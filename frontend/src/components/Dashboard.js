@@ -17,10 +17,8 @@ const Dashboard = () => {
     const [users, setUsers] = useState([]);
     const [activeTab, setActiveTab] = useState("stats");
     const [loading, setLoading] = useState(false);
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const { authFetch, logout, categories } = useAuth()
+    const { authFetch, categories } = useAuth()
     const navigate = useNavigate();
-    const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
     const getBooks = async () => {
         try {
@@ -50,17 +48,9 @@ const Dashboard = () => {
     return (
         <div className="min-h-screen bg-slate-50 flex relative" dir="rtl">
 
-            {isSidebarOpen && (
-                <div
-                    className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[60] lg:hidden transition-opacity"
-                    onClick={toggleSidebar}
-                ></div>
-            )}
-
             <aside className="fixed lg:static bottom-0 lg:inset-y-0 right-0 z-[70] w-full lg:w-72 bg-white border-t lg:border-t-0 lg:border-l border-slate-200 flex flex-col h-auto lg:h-screen transition-all duration-300">
 
                 <div className="hidden lg:flex p-8 items-center border-b border-slate-50">
-                    <h2 className="text-2xl font-black text-blue-600 tracking-tighter italic">BOOKSHELF</h2>
                 </div>
 
                 <nav className="flex lg:flex-col flex-1 px-2 lg:px-4 py-2 lg:py-6 space-y-0 lg:space-y-3 overflow-x-auto lg:overflow-y-auto justify-around lg:justify-start items-center lg:items-stretch">
@@ -109,7 +99,6 @@ const Dashboard = () => {
 
                         <h1 className="text-2xl md:text-3xl font-black text-slate-800 mr-2">
                             {activeTab === "stats" && "ملخص النظام"}
-                            {/* ... */}
                         </h1>
                     </div>
 
