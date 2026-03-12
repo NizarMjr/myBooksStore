@@ -21,8 +21,6 @@ const BookDetail = () => {
                 const res = await fetch(`${process.env.REACT_APP_SERVER_URL}/books/${id}`);
                 const data = await res.json();
                 setBook(data);
-                console.log(data);
-
             } catch (err) {
                 console.log("Error fetching book", err);
             } finally {
@@ -97,6 +95,10 @@ const BookDetail = () => {
         // window.open(fileUrl, '_blank');
     };
     const handleDownload = async (fileUrl, bookTitle) => {
+        if (!user) {
+            alert("يرجى تسجيل الدخول");
+            return;
+        }
         if (!fileUrl) return alert("الرابط غير متوفر");
 
         try {
@@ -161,7 +163,7 @@ const BookDetail = () => {
                         </button>
 
                         <button
-                            onClick={() => handleDownload(book.file)}
+                            onClick={() => handleDownload(book.file, book.title)}
                             className="w-full md:w-auto flex items-center justify-center gap-3 bg-emerald-600 text-white py-3 px-6 rounded-lg font-bold hover:bg-emerald-700 transition-all duration-300 shadow-md hover:shadow-emerald-200 active:scale-95"
                         >
                             <FaDownload className="text-xl" /> تحميل PDF
