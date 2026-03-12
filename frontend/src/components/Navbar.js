@@ -23,30 +23,32 @@ const Navbar = () => {
     return (
         <nav className={`w-full z-[100] transition-all duration-300 border-b border-slate-100 ${isSticky ? 'fixed top-0 bg-white/90 backdrop-blur-md shadow-md py-2' : 'relative bg-white py-4'
             }`} dir="rtl">
-            <div className="container mx-auto px-4 flex justify-between items-center gap-4">
+            <div className="container mx-auto px-4 flex justify-between items-center gap-2 sm:gap-4">
 
                 {/* Logo Section */}
                 <Link to="/" className="flex items-center gap-2 group shrink-0">
                     <img
                         src="https://cdn-icons-png.flaticon.com/512/29/29302.png"
                         alt="Logo"
-                        className="w-8 h-8 sm:w-10 sm:h-10 group-hover:rotate-12 transition-transform"
+                        className="w-7 h-7 sm:w-10 sm:h-10 group-hover:rotate-12 transition-transform"
                     />
-                    <span className="text-lg sm:text-xl font-black text-slate-800 tracking-tight hidden xs:block">بوك ستور</span>
+                    {/* يظهر النص فقط في الشاشات فوق الصغيرة جداً */}
+                    <span className="text-base sm:text-xl font-black text-slate-800 tracking-tight hidden xxs:block">بوك ستور</span>
                 </Link>
 
-                {/* Actions Section - يظهر دائماً */}
-                <div className="flex items-center gap-3 sm:gap-6">
+                {/* Actions Section */}
+                <div className="flex items-center gap-2 sm:gap-4 md:gap-6">
 
-                    {/* لوحة التحكم */}
+                    {/* لوحة التحكم - تصميم مضغوط للموبايل وجذاب للديسكتوب */}
                     {(userRole === 'admin' || userRole === 'owner') && (
-                        <Link to="/admin/dashboard" className="flex flex-col items-center text-blue-600 hover:text-blue-800 transition-colors">
-                            <div className="relative group flex items-center gap-3 px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 transition-all border border-slate-700 hover:border-blue-500 cursor-pointer">
+                        <Link to="/admin/dashboard" title="لوحة التحكم">
+                            <div className="relative group flex items-center gap-2 p-2 sm:px-4 sm:py-2 rounded-lg bg-slate-800 hover:bg-slate-700 transition-all border border-slate-700 cursor-pointer">
                                 <MdDashboard className="text-blue-400 text-xl sm:text-2xl group-hover:scale-110 transition-transform" />
-                                <span className="text-xs font-black text-slate-200 hidden xs:block tracking-widest">
+                                <span className="text-xs font-black text-slate-200 hidden md:block tracking-widest">
                                     الداشبورد
                                 </span>
-                                <span className="absolute top-2 right-2 flex h-2 w-2">
+                                {/* نقطة التنبيه النشطة */}
+                                <span className="absolute -top-1 -right-1 flex h-2 w-2">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
                                     <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
                                 </span>
@@ -55,16 +57,16 @@ const Navbar = () => {
                     )}
 
                     {/* المفضلة */}
-                    <Link to="/favorites" className="relative group flex flex-col items-center justify-center transition-all">
-                        <div className="relative p-1 sm:p-2 rounded-xl group-hover:bg-rose-50 transition-colors">
+                    <Link to="/favorites" className="relative group flex flex-col items-center">
+                        <div className="p-1.5 sm:p-2 rounded-xl group-hover:bg-rose-50 transition-colors">
                             <MdFavorite className={`text-xl sm:text-2xl ${favorites.length > 0 ? 'text-rose-500' : 'text-slate-400'}`} />
                             {favorites.length > 0 && (
-                                <span className="absolute -top-0 -right-0 flex h-4 w-4 sm:h-5 sm:w-5 items-center justify-center rounded-full bg-rose-600 text-[9px] sm:text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
+                                <span className="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-rose-600 text-[9px] font-bold text-white ring-2 ring-white">
                                     {favorites.length}
                                 </span>
                             )}
                         </div>
-                        <span className="text-[10px] font-bold text-slate-500 hidden xs:block">المفضلة</span>
+                        <span className="text-[9px] font-bold text-slate-500 hidden sm:block">المفضلة</span>
                     </Link>
 
                     {/* التنبيهات */}
@@ -72,22 +74,26 @@ const Navbar = () => {
 
                     {/* المستخدم / تسجيل الخروج */}
                     {isLoggedIn ? (
-                        <div className="flex items-center gap-2 sm:gap-3 border-r pr-2 sm:pr-6 border-slate-200">
-                            <div className="lg:flex flex-col items-start">
-                                <span className="block text-[10px] text-slate-400 leading-none">{userRole}</span>
-                                <span className="text-sm font-bold text-slate-800 truncate max-w-[80px]">Welcome {user.name}</span>
+                        <div className="flex items-center gap-2 sm:gap-3 border-r pr-2 sm:pr-4 border-slate-200">
+                            {/* اسم المستخدم يختفي في الموبايل ويبقى الترحيب المختصر */}
+                            <div className="hidden sm:flex flex-col items-start leading-tight">
+                                <span className="text-[10px] text-slate-400 uppercase font-bold tracking-tighter">{userRole}</span>
+                                <span className="text-xs font-bold text-slate-800 truncate max-w-[60px] md:max-w-[100px]">
+                                    {user.name}
+                                </span>
                             </div>
+
                             <button
                                 onClick={() => logout()}
                                 className="p-2 bg-slate-100 rounded-full text-slate-600 hover:bg-red-50 hover:text-red-600 transition-all"
                                 title="خروج"
                             >
-                                <IoLogOut className="text-xl" />
+                                <IoLogOut className="text-lg sm:text-xl" />
                             </button>
                         </div>
                     ) : (
-                        <Link to="/login" className="flex items-center gap-2 bg-slate-900 text-white px-4 sm:px-6 py-2 rounded-full hover:bg-black transition-transform active:scale-95 shadow-lg shrink-0">
-                            <FaUser className="text-xs" />
+                        <Link to="/login" className="flex items-center gap-2 bg-slate-900 text-white px-3 py-1.5 sm:px-6 sm:py-2 rounded-full hover:bg-black transition-all active:scale-95 shadow-md">
+                            <FaUser className="text-[10px]" />
                             <span className="text-xs sm:text-sm font-bold">دخول</span>
                         </Link>
                     )}
