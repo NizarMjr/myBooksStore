@@ -57,49 +57,42 @@ const Dashboard = () => {
                 ></div>
             )}
 
-            <aside className={`
-                fixed lg:static inset-y-0 right-0 z-[70] w-72 bg-white border-l border-slate-200 
-                flex flex-col h-screen transition-transform duration-300 ease-in-out
-                ${isSidebarOpen ? "translate-x-0 shadow-2xl" : "translate-x-full lg:translate-x-0"}
-            `}>
-                <div className="p-8 flex justify-between items-center">
+            <aside className="fixed lg:static bottom-0 lg:inset-y-0 right-0 z-[70] w-full lg:w-72 bg-white border-t lg:border-t-0 lg:border-l border-slate-200 flex flex-col h-auto lg:h-screen transition-all duration-300">
+
+                <div className="hidden lg:flex p-8 items-center border-b border-slate-50">
                     <h2 className="text-2xl font-black text-blue-600 tracking-tighter italic">BOOKSHELF</h2>
-                    <button onClick={toggleSidebar} className="lg:hidden p-2 text-slate-500 hover:bg-slate-100 rounded-full">
-                        <HiX size={24} />
-                    </button>
                 </div>
 
-                <nav className="flex-1 px-4 space-y-2 overflow-y-auto">
+                <nav className="flex lg:flex-col flex-1 px-2 lg:px-4 py-2 lg:py-6 space-y-0 lg:space-y-3 overflow-x-auto lg:overflow-y-auto justify-around lg:justify-start items-center lg:items-stretch">
                     {[
-                        { id: "stats", label: "الملخص", icon: <HiOutlineViewGrid size={24} /> },
-                        { id: "add-book", label: "إضافة كتاب جديد", icon: <HiOutlinePlusCircle size={24} /> },
-                        { id: "books", label: "إدارة الكتب", icon: <HiOutlineBookOpen size={24} /> },
-                        { id: "users", label: "المستخدمين", icon: <HiOutlineUsers size={24} /> },
-                        { id: "rules", label: "قوانين الإدارة", icon: <HiOutlineShieldCheck size={24} />, special: true },
+                        { id: "stats", label: "الملخص", icon: <HiOutlineViewGrid /> },
+                        { id: "add-book", label: "إضافة كتاب", icon: <HiOutlinePlusCircle /> },
+                        { id: "books", label: "إدارة الكتب", icon: <HiOutlineBookOpen /> },
+                        { id: "users", label: "المستخدمين", icon: <HiOutlineUsers /> },
+                        { id: "rules", label: "القوانين", icon: <HiOutlineShieldCheck />, special: true },
                     ].map((item) => (
                         <button
                             key={item.id}
-                            onClick={() => { setActiveTab(item.id); setIsSidebarOpen(false); }}
-                            className={`w-full flex items-center gap-3 p-4 rounded-2xl font-bold transition-all ${activeTab === item.id
-                                ? (item.special ? "bg-amber-50 text-amber-600 shadow-sm" : "bg-blue-50 text-blue-600 shadow-sm")
-                                : "text-slate-500 hover:bg-slate-50"
+                            onClick={() => setActiveTab(item.id)}
+                            className={`flex flex-col lg:flex-row items-center gap-1 lg:gap-4 p-2 lg:p-4 rounded-xl lg:rounded-2xl transition-all duration-200 shrink-0 lg:w-full ${activeTab === item.id
+                                    ? (item.special ? "bg-amber-50 text-amber-600 shadow-sm" : "bg-blue-600 text-white shadow-lg shadow-blue-200")
+                                    : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"
                                 }`}
                         >
-                            {item.icon}
-                            <span>{item.label}</span>
+                            <div className="text-2xl lg:text-2xl">
+                                {item.icon}
+                            </div>
+
+                            <span className="text-[10px] lg:text-sm font-bold tracking-wide">
+                                {item.label}
+                            </span>
+
+                            {activeTab === item.id && (
+                                <div className="hidden lg:block ml-auto w-1.5 h-1.5 rounded-full bg-current" />
+                            )}
                         </button>
                     ))}
                 </nav>
-
-                <div className="p-4 border-t border-slate-100">
-                    <button
-                        onClick={logout}
-                        className="flex items-center gap-3 p-4 w-full text-red-500 hover:bg-red-50 rounded-2xl transition-all font-bold"
-                    >
-                        <HiOutlineLogout size={24} />
-                        <span>تسجيل الخروج</span>
-                    </button>
-                </div>
             </aside>
 
             <main className="flex-1 p-4 md:p-10 overflow-y-auto w-full">
