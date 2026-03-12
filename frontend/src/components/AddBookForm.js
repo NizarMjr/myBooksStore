@@ -29,6 +29,15 @@ const AddBookForm = () => {
     };
 
     const handleSubmit = async (e) => {
+        if (coverImage && coverImage.size > 10 * 1024 * 1024) {
+            alert("عذراً، حجم صورة الغلاف يجب أن يكون أقل من 10 ميجابايت");
+            return;
+        }
+        if (formData.bookFile && formData.bookFile.size > 10 * 1024 * 1024) {
+            alert("عذراً، حجم ملف الكتاب (PDF) كبير جداً، الحد الأقصى هو 10 ميجابايت");
+            return;
+        }
+
         e.preventDefault();
         setLoading(true);
 
