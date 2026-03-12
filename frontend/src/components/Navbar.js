@@ -41,8 +41,16 @@ const Navbar = () => {
                     {/* لوحة التحكم */}
                     {(userRole === 'admin' || userRole === 'owner') && (
                         <Link to="/admin/dashboard" className="flex flex-col items-center text-blue-600 hover:text-blue-800 transition-colors">
-                            <MdDashboard className="text-xl sm:text-2xl" />
-                            <span className="text-[10px] font-bold hidden xs:block">الداشبورد</span>
+                            <div className="relative group flex items-center gap-3 px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 transition-all border border-slate-700 hover:border-blue-500 cursor-pointer">
+                                <MdDashboard className="text-blue-400 text-xl sm:text-2xl group-hover:scale-110 transition-transform" />
+                                <span className="text-xs font-black text-slate-200 hidden xs:block tracking-widest">
+                                    الداشبورد
+                                </span>
+                                <span className="absolute top-2 right-2 flex h-2 w-2">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                                </span>
+                            </div>
                         </Link>
                     )}
 
