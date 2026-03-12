@@ -307,6 +307,7 @@ module.exports.getUsers = async (req, res) => {
 module.exports.updateBook = async (req, res) => {
     try {
         const { id } = req.params;
+
         const { title, author, description, category, publishedYear, isActive } = req.body;
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -334,7 +335,6 @@ module.exports.updateBook = async (req, res) => {
         book.category = category || book.category;
         book.publishedYear = publishedYear || book.publishedYear;
         book.isActive = isActive !== undefined ? isActive : book.isActive;
-
         book.cover = coverUrl;
         book.file = pdfUrl;
 

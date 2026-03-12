@@ -22,10 +22,13 @@ router.get('/categories', getCategories); // GET ALL CATEGORIES
 router.get('/users', authenticatedToken, authenticatedAdmin, getUsers); // GET ALL USERS
 router.post('/refresh', refresh); // REFRESH TOKEN
 router.post('/logout', logout); // LOGOUT
-router.put('/books/:id', authenticatedToken, authenticatedAdmin, updateBook); // UPDATE BOOK
+router.put('/books/:id', authenticatedToken, authenticatedAdmin, upload.fields([
+    { name: 'cover', maxCount: 1 },
+    { name: 'bookFile', maxCount: 1 }
+]), updateBook); // UPDATE BOOK
 router.get('/user/:id', authenticatedToken, getUser) // GET USER
 router.put('/admin/:id', authenticatedToken, authenticatedAdmin, updateRole) // UPDATE ROLE
 router.post('/books/:id/favorite', authenticatedToken, updateFavorite) // UPDATE FAVORITE
 router.post('/notification/reset', authenticatedToken, resetNotification) // RESET NOTIFICATION
-router.get('/health',health); // CHECK SERVER HEALTH
+router.get('/health', health); // CHECK SERVER HEALTH
 module.exports = router;
