@@ -59,14 +59,14 @@ const Dashboard = () => {
                         { id: "add-book", label: "إضافة كتاب", icon: <HiOutlinePlusCircle /> },
                         { id: "books", label: "إدارة الكتب", icon: <HiOutlineBookOpen /> },
                         { id: "users", label: "المستخدمين", icon: <HiOutlineUsers /> },
-                        { id: "rules", label: "القوانين", icon: <HiOutlineShieldCheck />, special: true },
+                        // { id: "rules", label: "القوانين", icon: <HiOutlineShieldCheck />, special: true },
                     ].map((item) => (
                         <button
                             key={item.id}
                             onClick={() => setActiveTab(item.id)}
                             className={`flex flex-col lg:flex-row items-center gap-1 lg:gap-4 p-2 lg:p-4 rounded-xl lg:rounded-2xl transition-all duration-200 shrink-0 lg:w-full ${activeTab === item.id
-                                    ? (item.special ? "bg-amber-50 text-amber-600 shadow-sm" : "bg-blue-600 text-white shadow-lg shadow-blue-200")
-                                    : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"
+                                ? (item.special ? "bg-amber-50 text-amber-600 shadow-sm" : "bg-blue-600 text-white shadow-lg shadow-blue-200")
+                                : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"
                                 }`}
                         >
                             <div className="text-2xl lg:text-2xl">
@@ -132,7 +132,7 @@ const Dashboard = () => {
                                     <AddBookForm />
                                 </div>
                             )}
-                            {activeTab === "rules" && (
+                            {/* {activeTab === "rules" && (
                                 <div className="space-y-6 max-w-5xl animate-in fade-in slide-in-from-bottom-4 duration-500">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div className="bg-white p-6 md:p-8 rounded-[2rem] shadow-sm border border-slate-100">
@@ -152,7 +152,7 @@ const Dashboard = () => {
                                         </div>
                                     </div>
                                 </div>
-                            )}
+                            )} */}
                         </>
                     )}
                 </div>
