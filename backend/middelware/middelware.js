@@ -4,7 +4,6 @@ const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const path = require('path');
 const jwt = require("jsonwebtoken");
 
-// --- إعدادات التحقق (Authentication Middleware) ---
 module.exports.authenticatedToken = (req, res, next) => {
     try {
         const authHeader = req.headers.authorization;
@@ -57,7 +56,6 @@ module.exports.authenticatedAdmin = (req, res, next) => {
     }
 };
 
-// --- إعدادات Cloudinary ---
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
@@ -70,13 +68,11 @@ const storage = new CloudinaryStorage({
         const isPdf = file.fieldname === 'bookFile';
         return {
             folder: isPdf ? 'books_pdf' : 'books_covers',
-            // المجلد والنوع فقط، واترك الباقي للمكتبة
             resource_type: isPdf ? 'raw' : 'image',
             public_id: `${Date.now()}-${file.originalname.split('.')[0]}`,
         };
     },
 });
-// --- فلتر الملفات (File Filter) ---
 const fileFilter = (req, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase();
     const mimeType = file.mimetype;
