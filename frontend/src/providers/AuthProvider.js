@@ -66,7 +66,7 @@ export function AuthProvider({ children }) {
             ...options.headers,
             "Authorization": `Bearer ${token}`,
         };
-        if (!(data instanceof FormData)) {
+        if (!(options.body instanceof FormData)) {
             options.headers["Content-Type"] = "application/json";
         }
         options.credentials = "include";

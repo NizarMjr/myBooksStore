@@ -9,7 +9,8 @@ import Signup from './components/Signup';
 import Dashboard from './components/Dashboard';
 import UserDetails from './components/UserDetails';
 import Favorites from './components/Favorites';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import ProgressBarLoader from './components/ProgressBarLoader';
 
 function App() {
   const [appLoading, setAppLoading] = useState(true);

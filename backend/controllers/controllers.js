@@ -466,10 +466,6 @@ module.exports.uploadBook = async (req, res) => {
             return res.status(400).json({ message: "ملف الكتاب مطلوب" });
         }
 
-        // فحص أولي: هل الملفات موجودة أصلاً؟
-        console.log("Check File Object:", JSON.stringify(req.files, null, 2));
-
-        // استخراج الروابط مع التأكد من الوصول للـ path
         const coverUrl = (req.files && req.files['cover'] && req.files['cover'][0])
             ? String(req.files['cover'][0].path)
             : null;

@@ -45,11 +45,15 @@ const AddBookForm = () => {
                 method: "POST",
                 body: data,
             });
-
+            const result = await response.json();
+            const { message } = result;
             if (response.ok) {
                 alert("تمت إضافة الكتاب بنجاح!");
                 setFormData({ title: "", author: "", category: "", description: "" });
                 setPreview(null);
+            }
+            else {
+                alert(message)
             }
         } catch (error) {
             console.error("Error uploading book:", error);
