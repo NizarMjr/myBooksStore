@@ -1,7 +1,6 @@
 import { useRef, useState } from "react";
 import { HiOutlineSave, HiOutlineXCircle, HiOutlineCloudUpload, HiX } from "react-icons/hi";
 import { useAuth } from "../hooks/useAuth";
-import AlertMessage from "./AlertMessage";
 
 const EditBook = ({ book, onCancel, onUpdate }) => {
     const { authFetch, categories } = useAuth();

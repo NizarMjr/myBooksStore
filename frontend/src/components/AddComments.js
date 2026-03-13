@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { FaComment } from "react-icons/fa"
 import { useAuth } from "../hooks/useAuth";
-import AlertMessage from "./AlertMessage";
 
 const AddComments = ({ bookId }) => {
     const [comment, setComment] = useState("");

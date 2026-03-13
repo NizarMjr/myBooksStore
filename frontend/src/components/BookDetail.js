@@ -5,6 +5,7 @@ import { useAuth } from "../hooks/useAuth";
 import AddComments from "./AddComments";
 import BookComments from "./BookComments";
 import AlsoSee from "./AlsoSee";
+import ProgressBarLoader from "./ProgressBarLoader";
 
 const BookDetail = () => {
     const { id } = useParams();
@@ -14,6 +15,7 @@ const BookDetail = () => {
     const [loading, setLoading] = useState(true);
     const [isFavorite, setIsFavorite] = useState(false);
     const { user, authFetch, setFavorites } = useAuth();
+    const [loader, setLoader] = useState(false);
 
     useEffect(() => {
         const getBook = async () => {
@@ -99,8 +101,13 @@ const BookDetail = () => {
             alert("يرجى تسجيل الدخول");
             return;
         }
+
         if (!fileUrl) return alert("الرابط غير متوفر");
 
+        setLoader(true);
+        setTimeout(() => {
+            setLoader(false);
+        }, 3000);
         try {
             const response = await fetch(fileUrl);
             const blob = await response.blob();
@@ -121,6 +128,7 @@ const BookDetail = () => {
 
     if (loading) return <div className="text-center mt-20 text-xl">جارٍ التحميل...</div>;
     if (!book) return <div className="text-center mt-20 text-xl text-red-500">الكتاب غير موجود</div>;
+    if (loader) return <ProgressBarLoader />
 
     return (
         <div className="container mx-auto mt-10 p-4 mb-20 text-right" dir="rtl">

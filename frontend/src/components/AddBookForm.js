@@ -1,10 +1,9 @@
-import React, { useState, useRef, useEffect } from "react";
+import  { useState, useRef } from "react";
 import { HiOutlineBookOpen, HiOutlineCloudUpload, HiOutlineDocumentText, HiOutlineTag, HiOutlineUser, HiX } from "react-icons/hi";
-import { useAuth } from "../hooks/useAuth"; // لنفترض أنك تملك هذا الهوك لإرسال الـ Token
-import AlertMessage from "./AlertMessage";
+import { useAuth } from "../hooks/useAuth"; 
 
 const AddBookForm = () => {
-    const { authFetch, token, categories } = useAuth();
+    const { authFetch, categories } = useAuth();
     const fileInputRef = useRef(null);
     const [formData, setFormData] = useState({
         title: "",
@@ -13,9 +12,9 @@ const AddBookForm = () => {
         description: "",
     });
     
-    const [bookFile, setBookFile] = useState(null); // ملف الـ PDF أو الرابط
-    const [coverImage, setCoverImage] = useState(null); // صورة الغلاف
-    const [preview, setPreview] = useState(null); // لمعاينة الصورة قبل الرفع
+    const [bookFile, setBookFile] = useState(null); 
+    const [coverImage, setCoverImage] = useState(null); 
+    const [preview, setPreview] = useState(null); 
     const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
