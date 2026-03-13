@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 const Dashboard = () => {
     const [books, setBooks] = useState([]);
     const [users, setUsers] = useState([]);
-    const [activeTab, setActiveTab] = useState("stats");
+    const [activeTab, setActiveTab] = useState("books");
     const [loading, setLoading] = useState(false);
     const { authFetch, categories } = useAuth()
     const navigate = useNavigate();
@@ -55,10 +55,10 @@ const Dashboard = () => {
 
                 <nav className="flex lg:flex-col flex-1 px-2 lg:px-4 py-2 lg:py-6 space-y-0 lg:space-y-3 overflow-x-auto lg:overflow-y-auto justify-around lg:justify-start items-center lg:items-stretch">
                     {[
-                        { id: "stats", label: "الملخص", icon: <HiOutlineViewGrid /> },
-                        { id: "add-book", label: "إضافة كتاب", icon: <HiOutlinePlusCircle /> },
                         { id: "books", label: "إدارة الكتب", icon: <HiOutlineBookOpen /> },
+                        { id: "add-book", label: "إضافة كتاب", icon: <HiOutlinePlusCircle /> },
                         { id: "users", label: "المستخدمين", icon: <HiOutlineUsers /> },
+                        // { id: "stats", label: "الملخص", icon: <HiOutlineViewGrid /> },
                         // { id: "rules", label: "القوانين", icon: <HiOutlineShieldCheck />, special: true },
                     ].map((item) => (
                         <button
@@ -90,7 +90,9 @@ const Dashboard = () => {
                 <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
                     <div className="flex items-center gap-4">
                         <h1 className="text-2xl md:text-3xl font-black text-slate-800 mr-2">
-                            {activeTab === "stats" && "ملخص النظام"}
+                            {activeTab === "books" && "إدارة الكتب"}
+                            {activeTab === "add-book" && "إضافة كتاب"}
+                            {activeTab === "users" && "المستخدمين"}
                         </h1>
                     </div>
 
