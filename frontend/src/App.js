@@ -48,7 +48,12 @@ function App() {
     const checkServer = async () => {
       try {
         const res = await fetch(`${process.env.REACT_APP_SERVER_URL}/health`);
-        if (res.ok) setAppLoading(false);
+        if (res.ok) {
+          setTimeout(() => {
+            setAppLoading(false);
+          }, 5000);
+
+        }
       } catch (err) {
         setAppLoading(false);
       }
