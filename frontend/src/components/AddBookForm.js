@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { HiOutlineBookOpen, HiOutlineCloudUpload, HiOutlineDocumentText, HiOutlineTag, HiOutlineUser, HiX } from "react-icons/hi";
 import { useAuth } from "../hooks/useAuth"; // لنفترض أنك تملك هذا الهوك لإرسال الـ Token
+import AlertMessage from "./AlertMessage";
 
 const AddBookForm = () => {
     const { authFetch, token, categories } = useAuth();
@@ -11,11 +12,19 @@ const AddBookForm = () => {
         category: "",
         description: "",
     });
+    const [alert, setAlert] = useState({
+        show: false,
+        message: "",
+        type: ""
+    });
     const [bookFile, setBookFile] = useState(null); // ملف الـ PDF أو الرابط
     const [coverImage, setCoverImage] = useState(null); // صورة الغلاف
     const [preview, setPreview] = useState(null); // لمعاينة الصورة قبل الرفع
     const [loading, setLoading] = useState(false);
 
+    const handleCloseAlert = () => {
+        setAlert({ ...alert, show: false });
+    }
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -24,7 +33,7 @@ const AddBookForm = () => {
         const file = e.target.files[0];
         if (file) {
             setCoverImage(file);
-            setPreview(URL.createObjectURL(file)); 
+            setPreview(URL.createObjectURL(file));
         }
     };
 
@@ -56,7 +65,7 @@ const AddBookForm = () => {
             const result = await response.json();
             const { message } = result;
             if (response.ok) {
-                alert("تمت إضافة الكتاب بنجاح!");
+                setAlert({ ...alert, show: true, message: "تم إضافة الكتاب بنجاح!", type: "success" });
                 setFormData({ title: "", author: "", category: "", description: "" });
                 setPreview(null);
             }
@@ -66,6 +75,8 @@ const AddBookForm = () => {
         } catch (error) {
             console.error("Error uploading book:", error);
             alert("حدث خطأ أثناء الرفع");
+            setAlert({ ...alert, show: true, message: "حدث خطأ أثناء الرفع", type: "error" });
+
         } finally {
             setLoading(false);
         }
@@ -73,6 +84,7 @@ const AddBookForm = () => {
 
     return (
         <div className="p-8 md:p-12 bg-white" dir="rtl">
+            {alert.show && <AlertMessage message={alert.message} type={alert.type} onClose={handleCloseAlert} />}
             <div className="max-w-4xl mx-auto">
                 <div className="mb-10">
                     <h2 className="text-2xl font-black text-slate-800">إضافة كتاب جديد للمكتبة</h2>

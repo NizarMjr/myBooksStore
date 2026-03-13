@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { HiOutlineSave, HiOutlineXCircle, HiOutlineCloudUpload, HiX } from "react-icons/hi";
 import { useAuth } from "../hooks/useAuth";
+import AlertMessage from "./AlertMessage";
 
 const EditBook = ({ book, onCancel, onUpdate }) => {
     const { authFetch, categories } = useAuth();
@@ -15,6 +16,11 @@ const EditBook = ({ book, onCancel, onUpdate }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const fileInputRef = useRef(null);
     const [coverImage, setCoverImage] = useState(null);
+    const [alert, setAlert] = useState({
+        show: false,
+        message: "",
+        type: ""
+    });
 
     const [preview, setPreview] = useState(null);
 
@@ -43,15 +49,16 @@ const EditBook = ({ book, onCancel, onUpdate }) => {
 
             const response = await authFetch(`${process.env.REACT_APP_SERVER_URL}/books/${book._id}`, {
                 method: "PUT",
-                body: data, // 
+                body: data,
             });
 
             if (response.ok) {
+                setAlert({ ...alert, show: true, message: "تم تحديث الكتاب بنجاح!", type: "success" });
                 const result = await response.json();
-                alert("تم تحديث الكتاب بنجاح!");
-                onUpdate(result.book); 
+                onUpdate(result.book);
+
             } else {
-                alert("فشل في تحديث الكتاب");
+                setAlert({ ...alert, show: true, message: "فشل في تحديث الكتاب", type: "error" });
             }
         } catch (error) {
             console.error("Error updating book:", error);
@@ -66,9 +73,13 @@ const EditBook = ({ book, onCancel, onUpdate }) => {
             setPreview(URL.createObjectURL(file));
         }
     };
+    const handleCloseAlert = () => {
+        setAlert({ ...alert, show: false });
+    }
 
     return (
         <div className="bg-white p-8 rounded-[2.5rem] shadow-lg border border-slate-100 max-w-4xl mx-auto">
+            {alert.show && <AlertMessage message={alert.message} type={alert.type} onClose={handleCloseAlert} />}
             <div className="flex justify-between items-center mb-8 border-b pb-4">
                 <h2 className="text-2xl font-black text-slate-800 flex items-center gap-2">
                     تعديل بيانات الكتاب: <span className="text-blue-600 font-bold">{book.title}</span>

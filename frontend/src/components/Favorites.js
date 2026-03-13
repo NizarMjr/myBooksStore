@@ -22,7 +22,6 @@ const Favorites = () => {
 
     return (
         <div className="max-w-7xl mx-auto px-6 py-12 animate-in fade-in duration-700">
-            {/* Header */}
             <div className="flex items-center gap-4 mb-12">
                 <div className="bg-rose-50 p-4 rounded-3xl text-rose-500 shadow-sm">
                     <HiHeart size={32} />
@@ -54,7 +53,6 @@ const Favorites = () => {
                     ))}
                 </div>
             ) : (
-                /* Empty State */
                 <div className="py-32 text-center flex flex-col items-center bg-slate-50 rounded-[3rem] border-2 border-dashed border-slate-200">
                     <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center mb-6 shadow-sm">
                         <HiOutlineBookOpen className="text-slate-200 text-5xl" />

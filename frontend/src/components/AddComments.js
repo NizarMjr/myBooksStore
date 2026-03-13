@@ -1,18 +1,27 @@
 import { useState } from "react";
 import { FaComment } from "react-icons/fa"
 import { useAuth } from "../hooks/useAuth";
+import AlertMessage from "./AlertMessage";
 
 const AddComments = ({ bookId }) => {
     const [comment, setComment] = useState("");
-    const { user, token } = useAuth();
+    const { user } = useAuth();
     const { authFetch } = useAuth();
+    const [alert, setAlert] = useState({
+        show: false,
+        message: "",
+        type: ""
+    });
+    const handleCloseAlert = () => {
+        setAlert({ ...alert, show: false });
+    }
     const handleCommentSubmit = async (e) => {
         e.preventDefault();
         if (!user) {
-            alert("يرجى تسجيل الدخول لإضافة تعليق");
+            setAlert({ ...alert, show: true, message: "يرجى تسجيل الدخول لإضافة تعليق", type: "error" });
             return;
         }
-        
+
         try {
             const res = await authFetch(`${process.env.REACT_APP_SERVER_URL}/books/${bookId}/comments`, {
                 method: "POST",
@@ -23,10 +32,11 @@ const AddComments = ({ bookId }) => {
             });
             const data = await res.json();
             if (res.ok) {
-                alert("تم إضافة تعليقك بنجاح!");
+                setAlert({ ...alert, show: true, message: "تم إضافة تعليقك بنجاح!", type: "success" });
                 setComment("");
             } else {
-                alert("فشل إضافة التعليق: " + data.message);
+                setAlert({ ...alert, show: true, message: "فشل إضافة التعليق: " + data.message, type: "error" });
+
             }
         }
         catch (err) {
@@ -35,6 +45,7 @@ const AddComments = ({ bookId }) => {
     };
     return (
         < div className="mt-12 bg-white shadow-md rounded-xl p-8 max-w-4xl mx-auto" >
+            {alert.show && <AlertMessage message={alert.message} type={alert.type} onClose={handleCloseAlert} />}
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
                 <FaComment className="text-slate-600" /> التعليقات والمراجعات
             </h2>
