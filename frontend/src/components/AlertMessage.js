@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { createPortal } from "react-dom"; // أضف هذا السطر
 import { HiCheckCircle, HiXCircle } from "react-icons/hi";
 
 const AlertMessage = ({ message, type, onClose }) => {
@@ -11,21 +12,23 @@ const AlertMessage = ({ message, type, onClose }) => {
 
     const isSuccess = type === "success";
 
-    return (
-        <div className="fixed top-10 left-1/2 -translate-x-1/2 z-[999] w-[90%] max-w-md">
+    return createPortal(
+        <div className="fixed top-10 left-1/2 -translate-x-1/2 z-[1000] w-[90%] max-w-md pointer-events-auto">
             <div className={`
-        flex items-center gap-4 p-4 rounded-3xl shadow-2xl border backdrop-blur-md
-        animate-in fade-in zoom-in slide-in-from-top-8 duration-300
-        ${isSuccess
+                flex items-center gap-4 p-4 rounded-3xl shadow-2xl border backdrop-blur-md
+                animate-in fade-in zoom-in slide-in-from-top-8 duration-300
+                ${isSuccess
                     ? "bg-emerald-50/90 border-emerald-200 text-emerald-800"
                     : "bg-rose-50/90 border-rose-200 text-rose-800"}
-      `}>
+            `}>
                 <div className={`p-2 rounded-2xl ${isSuccess ? "bg-emerald-200/50" : "bg-rose-200/50"}`}>
                     {isSuccess ? <HiCheckCircle size={28} /> : <HiXCircle size={28} />}
                 </div>
 
-                <div className="flex-1">
-                    <p className="font-black text-sm tracking-tight">{isSuccess ? "عملية ناجحة" : "خطأ في التنفيذ"}</p>
+                <div className="flex-1 text-right"> 
+                    <p className="font-black text-sm tracking-tight leading-none mb-1">
+                        {isSuccess ? "عملية ناجحة" : "خطأ في التنفيذ"}
+                    </p>
                     <p className="text-xs font-bold opacity-80">{message}</p>
                 </div>
 
@@ -37,7 +40,8 @@ const AlertMessage = ({ message, type, onClose }) => {
                     <div className={`h-full animate-progress ${isSuccess ? "bg-emerald-500" : "bg-rose-500"}`} />
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 };
 
