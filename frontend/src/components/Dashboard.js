@@ -89,14 +89,6 @@ const Dashboard = () => {
 
                 <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
                     <div className="flex items-center gap-4">
-                        <button
-                            onClick={toggleSidebar}
-                            className="lg:hidden p-3 bg-white rounded-2xl shadow-sm text-slate-600 border border-slate-100"
-                        >
-                            <HiMenuAlt1 size={24} />
-                        </button>
-
-
                         <h1 className="text-2xl md:text-3xl font-black text-slate-800 mr-2">
                             {activeTab === "stats" && "ملخص النظام"}
                         </h1>
