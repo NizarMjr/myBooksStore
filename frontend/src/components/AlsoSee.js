@@ -11,7 +11,7 @@ const AlsoSee = ({ catId, currentBookId }) => {
         if (!catId) return;
         try {
             setLoading(true);
-            const res = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/favorites/?category=${catId}&limit=4`, {
+            const res = await fetch(`${process.env.REACT_APP_SERVER_URL}/?category=${catId}&limit=4`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
