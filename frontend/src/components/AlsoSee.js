@@ -53,8 +53,7 @@ const AlsoSee = ({ catId, currentBookId }) => {
                             <img
                                 src={book.cover}
                                 alt={book.title}
-                                className="w-full h-48 object-cover rounded-xl shadow-md mb-4 group-hover:-translate-y-2 transition-transform duration-300"
-                            />
+                                className="h-64 object-cover rounded-lg" />
                             <h4 className="font-bold text-slate-800 text-sm line-clamp-1">{book.title}</h4>
                             <p className="text-slate-400 text-xs mt-1">{book.author}</p>
                         </div>
