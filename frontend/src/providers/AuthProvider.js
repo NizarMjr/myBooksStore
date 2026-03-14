@@ -9,6 +9,8 @@ export function AuthProvider({ children }) {
     const [favorites, setFavorites] = useState([]);
 
     const logout = async () => {
+        if (!window.confirm('هل أنت متأدك من الخروج '))
+            return;
         setToken(null);
         setUser(null);
         const res = await fetch(`${process.env.REACT_APP_SERVER_URL}/logout`, {
@@ -16,8 +18,6 @@ export function AuthProvider({ children }) {
             credentials: "include",
         });
         if (res.ok) {
-            if (!window.confirm('هل أنت متأدك من الخروج '))
-                return;
             alert("تم تسجيل الخروج بنجاح");
             window.location.href = "/";
         } else {
