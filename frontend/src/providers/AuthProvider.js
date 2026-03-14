@@ -16,6 +16,8 @@ export function AuthProvider({ children }) {
             credentials: "include",
         });
         if (res.ok) {
+            if (!window.confirm('هل أنت متأدك من الخروج '))
+                return;
             alert("تم تسجيل الخروج بنجاح");
             window.location.href = "/";
         } else {
