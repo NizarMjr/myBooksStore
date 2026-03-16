@@ -4,7 +4,6 @@ import GoogleLoginButton from "./GoogleLoginButton";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
-// In your Login component
 const Login = () => {
     const { login, authFetch } = useAuth()
     const [isConnecting, setIsConnecting] = useState(false);
@@ -13,7 +12,7 @@ const Login = () => {
         setIsConnecting(true);
         try {
 
-            const res = await authFetch(`${process.env.REACT_APP_SERVER_URL}/auth/google`, {
+            const res = await fetch(`${process.env.REACT_APP_SERVER_URL}/auth/google`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ token: response.credential })
