@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema(
         email: {
             type: String,
             required: [true, "يرجى إدخال البريد الإلكتروني"],
-            unique: true, // Prevents duplicate accounts
+            unique: true, 
             lowercase: true,
             trim: true,
             match: [/^\S+@\S+\.\S+$/, "يرجى إدخال بريد إلكتروني صحيح"],
@@ -29,10 +29,7 @@ const userSchema = new mongoose.Schema(
                 ref: "Book",
             },
         ],
-        profilePic: {
-            type: String,
-            default: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
-        },
+
         lastActive: {
             type: Date,
             default: Date.now()

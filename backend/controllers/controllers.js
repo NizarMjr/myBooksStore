@@ -20,16 +20,16 @@ module.exports.googleAuth = async (req, res) => {
 
         const { sub: googleId, name, email, picture: avatar } = ticket.getPayload();
 
-        let user = await User.findOneAndUpdate(
-            { $or: [{ googleId }, { email }] },
-            {
+        let user = await User.findOne({ googleId });
+
+        if (!user) {
+            user = await User.create({
                 googleId,
                 name,
-                avatar,
-                lastLogin: Date.now()
-            },
-            { upsert: true, new: true, setDefaultsOnInsert: true }
-        );
+                email,
+                avatar
+            });
+        }
         const refreshToken = generateRefreshToken(user);
         if (!refreshToken) {
             return res.status(500).json({ message: "خطأ في إنشاء الجلسة" });
@@ -74,7 +74,7 @@ module.exports.googleAuth = async (req, res) => {
             }
         });
     } catch (error) {
-        res.status(401).json({ message: "فشل التحقق من هوية جوجل" });
+        res.status(500).json({ message: error.message });
     }
 }
 module.exports.logout = async (req, res) => {
@@ -538,7 +538,7 @@ module.exports.deleteUser = async (req, res) => {
 
 
         res.status(200).json({ message: 'تم حذف المستخدم بنجاح' });
-        
+
     } catch (err) {
         console.error("Delete User Error:", err);
         res.status(500).json({ message: "حدث خطأ في السيرفر أثناء محاولة الحذف" });
