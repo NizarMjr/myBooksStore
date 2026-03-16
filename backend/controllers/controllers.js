@@ -20,16 +20,17 @@ module.exports.googleAuth = async (req, res) => {
 
         const { sub: googleId, name, email, picture: avatar } = ticket.getPayload();
 
-        let user = await User.findOne({ googleId });
-
-        if (!user) {
-            user = await User.create({
+        let user = await User.findOneAndUpdate(
+            { $or: [{ googleId }, { email }] },
+            {
                 googleId,
                 name,
-                email,
-                avatar
-            });
-        }
+                email,   
+                avatar,
+                lastActive: Date.now()
+            },
+            { upsert: true, new: true, setDefaultsOnInsert: true }
+        );
         const refreshToken = generateRefreshToken(user);
         if (!refreshToken) {
             return res.status(500).json({ message: "خطأ في إنشاء الجلسة" });

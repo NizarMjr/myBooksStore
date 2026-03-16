@@ -31,7 +31,7 @@ const Login = () => {
             }
         } catch (error) {
             console.error('Login Error:', error);
-            alert("حدث خطأ في تسجيل الدخول");
+            alert(error.message);
         } finally {
             setIsConnecting(false);
         }
