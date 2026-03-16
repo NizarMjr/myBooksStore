@@ -1,18 +1,17 @@
 const express = require('express');
-const { authenticatedToken, authenticatedAdmin, upload } = require('../middelware/middelware');
-const { getBooks, getBookDetail, signup, addComment, login, getBookComment, getCategories, getUsers, getAllBooks, refresh, logout, updateBook, getUser, updateRole, updateFavorite, getFavoritesBooks, resetNotification, uploadBook, deleteBook, health } = require('../controllers/controllers');
+const { authenticatedToken, authenticatedAdmin, upload, acceptWindow } = require('../middelware/middelware');
+const { getBooks, getBookDetail, addComment, getBookComment, getCategories, getUsers, getAllBooks, refresh, logout, updateBook, getUser, updateRole, updateFavorite, getFavoritesBooks, resetNotification, uploadBook, deleteBook, health, googleAuth, deleteUser } = require('../controllers/controllers');
 const router = express.Router();
 router.post('/books/upload', authenticatedToken, authenticatedAdmin,
     upload.fields([
         { name: 'cover', maxCount: 1 },
         { name: 'bookFile', maxCount: 1 }
     ]), uploadBook);
-router.post('/signup', signup); // SIGNUP
-router.post('/login', login); // LOGIN
+router.post('/auth/google', googleAuth, acceptWindow);
 router.get('/', getBooks); // GET ALL BOOKS
 
 router.get('/books', getAllBooks); // GET ALL BOOKS
-
+router.delete('/user/:id', deleteUser);
 router.get('/user/favorites', authenticatedToken, getFavoritesBooks) // GET FAVORITE BOOKS
 router.get('/books/:id', getBookDetail); // GET BOOK INFO
 router.post('/books/:bookId/comments', authenticatedToken, addComment); // ADD COMMENT

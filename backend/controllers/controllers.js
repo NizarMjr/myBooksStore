@@ -7,53 +7,29 @@ const { generateAccessToken, generateRefreshToken } = require("../middelware/mid
 const RefreshToken = require("../models/RefreshToken");
 const Category = require("../models/Category");
 const cloudinary = require('cloudinary').v2;
+const { OAuth2Client } = require('google-auth-library');
 
-//SIGNUP 
-module.exports.signup = async (req, res) => {
+module.exports.googleAuth = async (req, res) => {
+    const { token } = req.body;
+    const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
     try {
-        console.log("Signup request body:", req.body);
-        const { name, email, password } = req.body;
+        const ticket = await client.verifyIdToken({
+            idToken: token,
+            audience: process.env.GOOGLE_CLIENT_ID,
+        });
 
-        if (!name || !email || !password) {
-            return res.status(400).json({ message: "يرجى ملء جميع الحقول" });
-        }
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({ message: "البريد الإلكتروني مستخدم بالفعل" });
-        }
-        const salt = await bcrypt.genSalt(10);
-        const passwordHash = await bcrypt.hash(password, salt);
-        const newUser = new User({ name, email, password: passwordHash });
+        const { sub: googleId, name, email, picture: avatar } = ticket.getPayload();
 
-        if (email === "nizar.mjr94@gmail.com")
-            newUser.role = "owner";
-
-        await newUser.save();
-        res.status(201).json({ message: "تم إنشاء الحساب بنجاح" });
-    } catch (err) {
-        res.status(500).json({ message: "خطأ في الخادم", error: err.message });
-    }
-}
-// LOGIN
-module.exports.login = async (req, res) => {
-    try {
-        const { email, password } = req.body;
-
-        if (!email || !password) {
-            return res.status(400).json({ message: "يرجى إدخال البريد الإلكتروني وكلمة المرور" });
-        }
-
-        const user = await User.findOne({ email }).select("+password");
-
-        if (!user) {
-            return res.status(400).json({ message: "بيانات تسجيل الدخول غير صحيحة" });
-        }
-
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(400).json({ message: "بيانات تسجيل الدخول غير صحيحة" });
-        }
-
+        let user = await User.findOneAndUpdate(
+            { $or: [{ googleId }, { email }] },
+            {
+                googleId,
+                name,
+                avatar,
+                lastLogin: Date.now()
+            },
+            { upsert: true, new: true, setDefaultsOnInsert: true }
+        );
         const refreshToken = generateRefreshToken(user);
         if (!refreshToken) {
             return res.status(500).json({ message: "خطأ في إنشاء الجلسة" });
@@ -68,7 +44,7 @@ module.exports.login = async (req, res) => {
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
             secure: true,
-            sameSite: 'None',
+            sameSite: 'none',
             maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
         });
 
@@ -84,12 +60,12 @@ module.exports.login = async (req, res) => {
             path: 'favoriteBooks',
             select: 'title author coverImage description category'
         });
-
         res.status(200).json({
             message: "تم تسجيل الدخول بنجاح",
             accessToken,
             user: {
                 id: user._id,
+                avatar: user.avatar,
                 name: user.name,
                 email: user.email,
                 role: user.role,
@@ -97,9 +73,8 @@ module.exports.login = async (req, res) => {
                 notification: user.notification,
             }
         });
-
-    } catch (err) {
-        res.status(500).json({ message: "خطأ في الخادم", error: err.message });
+    } catch (error) {
+        res.status(401).json({ message: "فشل التحقق من هوية جوجل" });
     }
 }
 module.exports.logout = async (req, res) => {
@@ -141,7 +116,8 @@ module.exports.refresh = async (req, res) => {
                     _id: foundUser.id,
                     name: foundUser.name,
                     email: foundUser.email,
-                    role: foundUser.role
+                    role: foundUser.role,
+                    avatar: foundUser.avatar,
                 });
                 const user = {
                     id: foundUser.id,
@@ -150,6 +126,7 @@ module.exports.refresh = async (req, res) => {
                     role: foundUser.role,
                     favorites: foundUser.favoriteBooks,
                     notification: foundUser.notification,
+                    avatar: foundUser.avatar,
                 }
                 res.status(200).json({ accessToken, user });
 
@@ -276,7 +253,7 @@ module.exports.getBookComment = async (req, res) => {
         if (!mongoose.Types.ObjectId.isValid(bookId)) {
             return res.status(400).json({ message: "Invalid book ID" });
         }
-        const book = await Book.findById(bookId).populate("comments.user", "_id name profilePic role");
+        const book = await Book.findById(bookId).populate("comments.user", "_id name avatar role");
         if (!book) {
             return res.status(404).json({ message: "Book not found" });
         }
@@ -539,3 +516,31 @@ module.exports.health = (req, res) => {
         message: 'Server is awake and healthy'
     });
 }
+//DELETE USER
+module.exports.deleteUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // 1. التحقق من صحة الـ ID
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: "معرف المستخدم غير صالح" });
+        }
+
+        if (req.user && req.user.id === id) {
+            return res.status(403).json({ message: "لا يمكنك حذف حسابك الخاص من هنا" });
+        }
+
+        const user = await User.findByIdAndDelete(id);
+
+        if (!user) {
+            return res.status(404).json({ message: "المستخدم غير موجود" });
+        }
+
+
+        res.status(200).json({ message: 'تم حذف المستخدم بنجاح' });
+        
+    } catch (err) {
+        console.error("Delete User Error:", err);
+        res.status(500).json({ message: "حدث خطأ في السيرفر أثناء محاولة الحذف" });
+    }
+};

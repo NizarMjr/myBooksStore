@@ -68,7 +68,15 @@ const Navbar = () => {
                         </div>
                         <span className="text-[9px] font-bold text-slate-500 hidden sm:block">المفضلة</span>
                     </Link>
-
+                    {/* عرض الصورة الشخصية */}
+                    {user &&
+                        <Link to={`/user/${user.id}`}>
+                            <img
+                                src={user.avatar}
+                                alt={user.name}
+                                className="w-10 h-10 rounded-full border-2 border-blue-500 object-cover hover:opacity-80 transition-opacity"
+                            />
+                        </Link>}
                     {/* التنبيهات */}
                     {isLoggedIn && <Notifications />}
 

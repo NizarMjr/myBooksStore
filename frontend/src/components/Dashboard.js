@@ -120,7 +120,7 @@ const Dashboard = () => {
                         <>
                             {activeTab === "stats" && <BooksTable books={books.slice(0, 5)} />}
                             {activeTab === "books" && <BooksTable books={books} />}
-                            {activeTab === "users" && <UsersTable users={users} />}
+                            {activeTab === "users" && <UsersTable users={users} setUsers={setUsers} />}
                             {activeTab === "add-book" && (
                                 <div className="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-6 md:p-8">
                                     <AddBookForm />

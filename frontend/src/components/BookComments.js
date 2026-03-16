@@ -22,7 +22,6 @@ const BookComments = ({ bookId }) => {
 
     }, [bookId]);
 
-    // دالة لتنسيق شكل الـ Badge حسب الرتبة
     const renderRoleBadge = (role) => {
         if (role === "owner") {
             return (
@@ -66,8 +65,13 @@ const BookComments = ({ bookId }) => {
                                     </Link>
                                 ) : (
                                     <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 border border-slate-200">
-                                        <FaUserCircle size={30} />
-                                    </div>
+                                        <Link to={`/user/${comment.user._id}`}>
+                                            <img
+                                                src={comment.user.avatar}
+                                                alt={comment.user.name}
+                                                className="w-10 h-10 rounded-full border-2 border-blue-500 object-cover hover:opacity-80 transition-opacity"
+                                            />
+                                        </Link>                                    </div>
                                 )}
                             </div>
 

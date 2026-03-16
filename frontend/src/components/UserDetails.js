@@ -75,7 +75,13 @@ const UserDetails = () => {
             {/* Header / Profile Cover Area */}
             <div className="h-32 bg-gradient-to-r from-blue-600 to-indigo-600 relative">
                 <div className="absolute -bottom-12 right-10 bg-white p-2 rounded-[2rem] shadow-md">
-                    <HiOutlineUserCircle size={80} className="text-slate-200 bg-slate-50 rounded-full" />
+                    {userDetail &&
+                        <img
+                            src={userDetail.avatar || 'https://via.placeholder.com/40'}
+                            alt={userDetail.name}
+                            className="rounded-full border-2 border-blue-500 object-cover hover:opacity-80 transition-opacity"
+                            onError={(e) => e.target.src = 'https://via.placeholder.com/40'}
+                        />}
                 </div>
             </div>
 

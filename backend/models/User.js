@@ -15,12 +15,8 @@ const userSchema = new mongoose.Schema(
             trim: true,
             match: [/^\S+@\S+\.\S+$/, "يرجى إدخال بريد إلكتروني صحيح"],
         },
-        password: {
-            type: String,
-            required: [true, "يرجى إدخال كلمة المرور"],
-            minlength: 6,
-            select: false, // Prevents password from being returned in API calls by default
-        },
+        googleId: { type: String, required: true, unique: true },
+        avatar: { type: String },
         role: {
             type: String,
             enum: ["user", "admin", "owner"],

@@ -1,9 +1,9 @@
-import  { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { HiOutlineBookOpen, HiOutlineCloudUpload, HiOutlineDocumentText, HiOutlineTag, HiOutlineUser, HiX } from "react-icons/hi";
-import { useAuth } from "../hooks/useAuth"; 
+import { useAuth } from "../hooks/useAuth";
 
 const AddBookForm = () => {
-    const { authFetch, categories } = useAuth();
+    const { authFetch, categories, token } = useAuth();
     const fileInputRef = useRef(null);
     const [formData, setFormData] = useState({
         title: "",
@@ -11,10 +11,10 @@ const AddBookForm = () => {
         category: "",
         description: "",
     });
-    
-    const [bookFile, setBookFile] = useState(null); 
-    const [coverImage, setCoverImage] = useState(null); 
-    const [preview, setPreview] = useState(null); 
+
+    const [bookFile, setBookFile] = useState(null);
+    const [coverImage, setCoverImage] = useState(null);
+    const [preview, setPreview] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
@@ -58,7 +58,6 @@ const AddBookForm = () => {
             const { message } = result;
             if (response.ok) {
                 alert("تم إضافة الكتاب بنجاح!");
-                setFormData({ title: "", author: "", category: "", description: "" });
                 setPreview(null);
             }
             else {

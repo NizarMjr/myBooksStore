@@ -1,70 +1,54 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import ProgressBarLoader from './ProgressBarLoader';
+import GoogleLoginButton from "./GoogleLoginButton";
 import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
+// In your Login component
 const Login = () => {
-    const [formData, setFormData] = useState({ email: "", password: "" });
-    const [error, setError] = useState("");
+    const { login, authFetch } = useAuth()
+    const [isConnecting, setIsConnecting] = useState(false);
     const navigate = useNavigate();
-    const { login, setFavorites } = useAuth();
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError("");
+    const handleGoogleSuccess = async (response) => {
+        setIsConnecting(true);
         try {
-            const res = await fetch(`${process.env.REACT_APP_SERVER_URL}/login`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData),
-                credentials: "include",
+
+            const res = await authFetch(`${process.env.REACT_APP_SERVER_URL}/auth/google`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token: response.credential })
             });
+
+            if (!res.ok) {
+                throw new Error('Server error');
+            }
+
             const data = await res.json();
 
-            if (res.ok) {
+            if (data.accessToken) {
                 login(data.accessToken, data.user);
-                setFavorites(data.user.favorites);
-                navigate("/");
-            } else {
-                setError(data.message || "فشل تسجيل الدخول");
+                navigate('/');
             }
-        } catch (err) {
-            setError("حدث خطأ في الاتصال بالخادم");
+        } catch (error) {
+            console.error('Login Error:', error);
+            alert("حدث خطأ في تسجيل الدخول");
+        } finally {
+            setIsConnecting(false);
         }
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-100 px-4" dir="rtl">
-            <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
-                <h2 className="text-3xl font-bold mb-6 text-center text-slate-800">تسجيل الدخول</h2>
-                {error && <p className="bg-red-100 text-red-600 p-2 rounded mb-4 text-center">{error}</p>}
-
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                        <label className="block mb-1 font-medium">البريد الإلكتروني</label>
-                        <input
-                            type="email"
-                            required
-                            className="w-full p-2 border rounded-lg outline-none focus:border-blue-500"
-                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        />
-                    </div>
-                    <div>
-                        <label className="block mb-1 font-medium">كلمة المرور</label>
-                        <input
-                            type="password"
-                            required
-                            className="w-full p-2 border rounded-lg outline-none focus:border-blue-500"
-                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                        />
-                    </div>
-                    <button className="w-full bg-slate-800 text-white py-2 rounded-lg font-bold hover:bg-black transition">
-                        دخول
-                    </button>
-                </form>
-                <p className="mt-4 text-center text-gray-600">
-                    ليس لديك حساب؟ <Link to="/signup" className="text-blue-600 hover:underline">إنشاء حساب جديد</Link>
-                </p>
-            </div>
+        <div className="flex flex-col items-center justify-center min-h-[200px]">
+            {isConnecting ? (
+                <ProgressBarLoader />
+            ) : (
+                <>
+                    <GoogleLoginButton onSuccess={handleGoogleSuccess} />
+                    <p className="text-sm text-gray-500 mt-4">
+                        تسجيل الدخول باستخدام حساب جوجل
+                    </p>
+                </>
+            )}
         </div>
     );
 };

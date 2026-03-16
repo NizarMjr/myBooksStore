@@ -24,10 +24,14 @@ module.exports.authenticatedToken = (req, res, next) => {
         res.status(500).json({ message: "خطأ في الخادم", error: err.message });
     }
 };
-
+module.exports.acceptWindow = (req, res, next) => {
+    res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
+    res.setHeader("Cross-Origin-Embedder-Policy", "unsafe-none");
+    next();
+}
 module.exports.generateAccessToken = (user) => {
     return jwt.sign(
-        { id: user._id, name: user.name, email: user.email, role: user.role },
+        { id: user._id, name: user.name, email: user.email, role: user.role, avatar: user.avatar },
         process.env.JWT_KEY,
         { expiresIn: "5min" }
     );
@@ -35,7 +39,7 @@ module.exports.generateAccessToken = (user) => {
 
 module.exports.generateRefreshToken = (user) => {
     return jwt.sign(
-        { id: user._id, name: user.name, email: user.email, role: user.role },
+        { id: user._id, name: user.name, email: user.email, role: user.role, avatar: user.avatar },
         process.env.JWT_KEY,
         { expiresIn: "30d" }
     );
