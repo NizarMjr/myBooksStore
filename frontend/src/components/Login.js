@@ -15,7 +15,8 @@ const Login = () => {
             const res = await fetch(`${process.env.REACT_APP_SERVER_URL}/auth/google`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ token: response.credential })
+                body: JSON.stringify({ token: response.credential }),
+                credentials: "include",
             });
 
             if (!res.ok) {
